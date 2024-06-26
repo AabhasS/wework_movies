@@ -31,61 +31,59 @@ class NowPlayingMovies extends StatelessWidget {
       ),
       child: BlocProvider<MoviesBloc>(
           create: (context) => MoviesBloc(),
-          child:
-              BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
-            return Scaffold(
-              backgroundColor: Colors.transparent,
-              body: NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      backgroundColor: Colors.transparent,
-                      title:
-                          AddressWidget(placemark: Placemark.fromMap(address)),
-                      pinned: true,
-                      floating: true,
-                      actions: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Image.asset('assets/we.png'),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: Colors.transparent,
+                    title: AddressWidget(placemark: Placemark.fromMap(address)),
+                    pinned: true,
+                    floating: true,
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Image.asset('assets/we.png'),
+                        ),
+                      )
+                    ],
+                    forceElevated: innerBoxIsScrolled,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(88.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 16),
+                        child: SearchBar(
+                          elevation: const MaterialStatePropertyAll<double>(0),
+                          leading: Icon(
+                            Icons.search_rounded,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
-                        )
-                      ],
-                      forceElevated: innerBoxIsScrolled,
-                      bottom: PreferredSize(
-                        preferredSize: const Size.fromHeight(88.0),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 16),
-                          child: SearchBar(
-                            elevation:
-                                const MaterialStatePropertyAll<double>(0),
-                            leading: Icon(
-                              Icons.search_rounded,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            hintText: 'Search Movies by name...',
-                            hintStyle: MaterialStatePropertyAll<TextStyle?>(
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontWeight: FontWeight.w300)),
-                            onChanged: (s) {
-                              BlocProvider.of<MoviesBloc>(context).searchQuery =
-                                  s;
-                              BlocProvider.of<MoviesBloc>(context).add(FetchMovies(searchQuery: s));
-                            },
-                          ),
+                          hintText: 'Search Movies by name...',
+                          hintStyle: MaterialStatePropertyAll<TextStyle?>(
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w300)),
+                          onChanged: (s) {
+                            BlocProvider.of<MoviesBloc>(context).searchQuery =
+                                s;
+                            BlocProvider.of<MoviesBloc>(context)
+                                .add(FetchMovies(searchQuery: s));
+                          },
                         ),
                       ),
                     ),
-                  ];
-                },
-                body: Padding(
+                  ),
+                ];
+              },
+              body: BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
@@ -96,8 +94,11 @@ class NowPlayingMovies extends StatelessWidget {
                             moviesFuture: (page) =>
                                 BlocProvider.of<MoviesBloc>(context)
                                     .moviesRepository
-                                    .fetchTopRatedMovies(
-                                        page: page, searchQuery: BlocProvider.of<MoviesBloc>(context).searchQuery)),
+                                    .fetchNowPlayingMovies(
+                                        page: page,
+                                        searchQuery:
+                                            BlocProvider.of<MoviesBloc>(context)
+                                                .searchQuery)),
                       ),
                       const SectionHeaderWidget(title: 'TOP RATED'),
                       Expanded(
@@ -106,34 +107,37 @@ class NowPlayingMovies extends StatelessWidget {
                           return BlocProvider.of<MoviesBloc>(context)
                               .moviesRepository
                               .fetchTopRatedMovies(
-                                  page: page, searchQuery: BlocProvider.of<MoviesBloc>(context).searchQuery);
+                                  page: page,
+                                  searchQuery:
+                                      BlocProvider.of<MoviesBloc>(context)
+                                          .searchQuery);
                         }),
                       ),
                     ],
                   ),
+                );
+              }),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              unselectedIconTheme: const IconThemeData(color: Colors.black),
+              backgroundColor: const Color(0xffF0EFEF),
+              currentIndex: 0,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Image.asset(
+                      'assets/we.png',
+                      height: 20,
+                    ),
+                    label: 'We movies'),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.map_outlined),
+                  label: 'Explore',
                 ),
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                unselectedIconTheme: const IconThemeData(color: Colors.black),
-                backgroundColor: const Color(0xffF0EFEF),
-                currentIndex: 0,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        'assets/we.png',
-                        height: 20,
-                      ),
-                      label: 'We movies'),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.map_outlined),
-                    label: 'Explore',
-                  ),
-                  const BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_month), label: 'Upcoming')
-                ],
-              ),
-            );
-          })),
+                const BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_month), label: 'Upcoming')
+              ],
+            ),
+          )),
     );
   }
 }

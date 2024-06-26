@@ -4,18 +4,18 @@ import 'package:shimmer/shimmer.dart';
 import 'package:wemovies/src/repositories/view_models/movie_view_model.dart';
 
 class TopRatedMovieWidget extends StatelessWidget {
-  const TopRatedMovieWidget({super.key, required this.movieViewModel});
+  const TopRatedMovieWidget({super.key, required this.movieViewModel,  this.borderRadius =20});
 
   final MovieViewModel movieViewModel;
-
+  final double borderRadius;
   @override
   Widget build(BuildContext context) {
     return PhysicalModel(
       elevation: 4,
       color: Theme.of(context).colorScheme.background,
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -26,7 +26,7 @@ class TopRatedMovieWidget extends StatelessWidget {
                 Container(
                   height: 180,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(borderRadius),
                       image: DecorationImage(
                           alignment: Alignment.topCenter,
                           fit: BoxFit.cover,
@@ -61,37 +61,43 @@ class TopRatedMovieWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              movieViewModel.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Text(
-              movieViewModel.overview,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.grey),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              '${movieViewModel.votes} Votes | ${movieViewModel.avgRating} ⭐',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    movieViewModel.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    movieViewModel.overview,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    '${movieViewModel.votes} Votes | ${movieViewModel.avgRating} ⭐',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -102,15 +108,16 @@ class TopRatedMovieWidget extends StatelessWidget {
 
 class TopRatedMovieLoadingWidget extends StatelessWidget {
   const TopRatedMovieLoadingWidget({
-    super.key,
+    super.key,  this.borderRadius =20,
   });
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    return PhysicalModel(
+    return ListView(children: List.generate(2, (index) => PhysicalModel(
       elevation: 4,
       color: Colors.white,
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -126,7 +133,7 @@ class TopRatedMovieLoadingWidget extends StatelessWidget {
                     height: 150,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(borderRadius),
                     ),
                   ),
                 ),
@@ -142,7 +149,7 @@ class TopRatedMovieLoadingWidget extends StatelessWidget {
                 height: 16,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
               ),
             ),
@@ -156,7 +163,7 @@ class TopRatedMovieLoadingWidget extends StatelessWidget {
                 height: 10,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
               ),
             ),
@@ -170,13 +177,13 @@ class TopRatedMovieLoadingWidget extends StatelessWidget {
                 height: 16,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
+    )),);
   }
 }

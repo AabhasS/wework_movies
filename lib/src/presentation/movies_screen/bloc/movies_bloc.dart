@@ -19,6 +19,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
   Future<FutureOr<void>> _mapFetchEventToState(
       FetchMovies event, Emitter<MoviesState> emit) async {
+    print("object");
     emit(MoviesLoading());
+    emit(MoviesLoaded(query: event.searchQuery));
   }
 }

@@ -8,9 +8,8 @@ class MoviesInitial extends MoviesState {}
 class MoviesLoading extends MoviesState {}
 
 class MoviesLoaded extends MoviesState {
-  final List movies;
-  final bool hasReachedMax;
-  MoviesLoaded({this.movies = const [], this.hasReachedMax = false});
+  final String query;
+  MoviesLoaded({this.query = ''});
 }
 
 class MoviesEmpty extends MoviesState {}

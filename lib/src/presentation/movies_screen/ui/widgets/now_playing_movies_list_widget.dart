@@ -11,7 +11,7 @@ class NowPlayingMoviesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaginationView<MovieViewModel>(
-      // pullToRefresh: true,
+       pullToRefresh: true,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, item, i) {
         return Padding(

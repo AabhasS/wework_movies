@@ -24,9 +24,11 @@ class TopRatedMoviesWidget extends StatelessWidget {
       pageFetch: (offset, pagenumber) {
         return moviesFuture(pagenumber + 1);
       },
-      onEmpty: Text("NO DATA"),
-      onError: (e) => Text('ERRORRRRR'),
-      initialLoader: TopRatedMovieLoadingWidget(),
+      onEmpty: const Center(child: Text("No Movies found!!")),
+      onError: (e) => const Center(
+          child: Text(
+              "There was an error fetching the movies. Please try again!!")),
+      initialLoader: const TopRatedMovieLoadingWidget(),
     );
   }
 }

@@ -16,10 +16,13 @@ class LaunchScreenWidget extends StatelessWidget {
           child: BlocListener<LaunchScreenBloc, LaunchScreenState>(
               listener: (context, state) {
             if (state is LaunchScreenLoaded) {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NowPlayingMovies(
-                        address: state.location,
-                      )));
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => NowPlayingMovies(
+                          address: state.location,
+                        )),
+                (Route<dynamic> route) => false,
+              );
             }
           }, child: BlocBuilder<LaunchScreenBloc, LaunchScreenState>(
                   builder: (context, state) {

@@ -23,7 +23,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
         await getIt<MoviesService>().getNowPlayingMovies(page: page);
     return movies
         .map((movie) => MovieViewModel.fromMovie(movie))
-        //.where((element) => element.title.toLowerCase().startsWith(searchQuery.toLowerCase()))
+        .where((element) => element.title.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
   }
 
@@ -34,7 +34,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
         await getIt<MoviesService>().getTopRatedMovies(page: page);
     return movies
         .map((movie) => MovieViewModel.fromMovie(movie))
-       // .where((element) => element.title.toLowerCase().startsWith(searchQuery.toLowerCase()))
+        .where((element) => element.title.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
   }
 }

@@ -5,9 +5,10 @@ import 'package:shimmer/shimmer.dart';
 import 'package:wemovies/src/repositories/view_models/movie_view_model.dart';
 
 class NowPlayingMovieWidget extends StatelessWidget {
-  const NowPlayingMovieWidget({super.key, required this.movie});
+  const NowPlayingMovieWidget({super.key, required this.movie,  this.borderRadius = 20});
 
   final MovieViewModel movie;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,12 @@ class NowPlayingMovieWidget extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2),
         child: Container(
           width: 250,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(borderRadius)),
           padding: EdgeInsets.all(8),
           child: Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(borderRadius),
                 child: Image.network(
                   movie.url,
                   fit: BoxFit.cover,
@@ -40,7 +41,7 @@ class NowPlayingMovieWidget extends StatelessWidget {
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(borderRadius)),
                           child: Text('${movie.avgRating} ⭐', style: Theme
                               .of(context)
                               .textTheme
@@ -54,7 +55,7 @@ class NowPlayingMovieWidget extends StatelessWidget {
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(borderRadius)),
                               child: Row(
                                 children: [
                                   Icon(
@@ -80,7 +81,7 @@ class NowPlayingMovieWidget extends StatelessWidget {
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(borderRadius)),
                               child: Icon(
                                 Icons.favorite_border,
                                 color: Colors.white,
@@ -106,7 +107,7 @@ class NowPlayingMovieWidget extends StatelessWidget {
                             Colors.black.withOpacity(0.8),
                             Colors.grey.withOpacity(0.8)
                           ]),
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(borderRadius)),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +169,10 @@ class NowPlayingMovieWidget extends StatelessWidget {
 class NowPlayingMovieLoadingWidget extends StatelessWidget {
   const NowPlayingMovieLoadingWidget({
     super.key,
+    this.borderRadius  = 20
   });
+
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +187,7 @@ class NowPlayingMovieLoadingWidget extends StatelessWidget {
           margin: EdgeInsets.all(8),
           decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(borderRadius)),
         ))),);
 
 

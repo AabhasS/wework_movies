@@ -10,7 +10,7 @@ class SectionHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('NOW PLAYING', style: Theme.of(context).textTheme.bodySmall,),
+        Text(title, style: Theme.of(context).textTheme.bodySmall,),
         const SizedBox(
           width: 16,
         ),

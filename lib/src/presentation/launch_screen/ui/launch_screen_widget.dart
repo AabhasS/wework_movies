@@ -38,27 +38,15 @@ class LaunchScreenWidget extends StatelessWidget {
                     Container(
                       height: 100,
                       width: 100,
-                      child: CircularProgressIndicator(
+                      child: const CircularProgressIndicator(
                         color: Colors.black,
                         strokeCap: StrokeCap.square,
                       ),
                     ),
                   ],
                 ),
-              LaunchScreenLoaded() => Column(
-                  children: [
-                    Text(state.location.toString()),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => NowPlayingMovies(
-                                    address: state.location,
-                                  )));
-                        },
-                        child: Text('Next'))
-                  ],
-                ),
-              _ => SizedBox.shrink()
+              LaunchScreenError() => const Text(("OOPS SOMETHING WENT WRONG")),
+              _ => const SizedBox.shrink()
             };
           })),
         ),

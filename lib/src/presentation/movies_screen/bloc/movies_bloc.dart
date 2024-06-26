@@ -14,6 +14,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<FetchMovies>(_mapFetchEventToState);
   }
 
+  String searchQuery = '';
   MoviesRepository moviesRepository = getIt<MoviesRepository>();
 
   Future<FutureOr<void>> _mapFetchEventToState(

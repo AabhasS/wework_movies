@@ -12,3 +12,6 @@ class LaunchScreenLoaded extends LaunchScreenState {
 
   LaunchScreenLoaded({this.location = const {}});
 }
+
+class LaunchScreenError extends LaunchScreenState {}
+

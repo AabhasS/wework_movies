@@ -17,20 +17,19 @@ part 'launch_screen_state.dart';
 
 class LaunchScreenBloc extends Bloc<LaunchScreenEvent, LaunchScreenState> {
   LaunchScreenBloc() : super(LaunchScreenInitial()) {
-    on<FetchLocation>(_mapFecthEventToState);
+    on<FetchLocation>(_mapFetchEventToState);
   }
 
   String address = '';
 
-  Future<void> _mapFecthEventToState(
+  Future<void> _mapFetchEventToState(
       FetchLocation event, Emitter<LaunchScreenState> emit) async {
     emit(LaunchScreenLoading());
     Placemark? p;
     try {
       p = await _getCurrentPosition();
-      print(p);
     } catch (e) {
-      print('EROROORR$e');
+      emit(LaunchScreenError());
     }
     emit(LaunchScreenLoaded(location: p?.toJson() ?? {}));
   }

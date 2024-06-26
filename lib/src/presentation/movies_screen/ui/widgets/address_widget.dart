@@ -31,7 +31,7 @@ class AddressWidget extends StatelessWidget {
           ],
         ),
         Text(
-          '${placemark.street},'
+          '${placemark.subLocality},'
           ' ${placemark.locality}',
           style: Theme.of(context).textTheme.bodySmall,
         )

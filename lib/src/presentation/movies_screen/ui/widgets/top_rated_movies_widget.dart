@@ -25,12 +25,22 @@ class TopRatedMovieWidget extends StatelessWidget {
               children: [
                 Container(
                   height: 180,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      image: DecorationImage(
-                          alignment: Alignment.topCenter,
-                          fit: BoxFit.cover,
-                          image: NetworkImage(movieViewModel.url))),
+                  ),
+                  child:  ClipRRect(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    child: CachedNetworkImage(
+                      errorWidget: (context, e, _) => Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(color: Colors.white,)),
+                      imageUrl: movieViewModel.url,
+                      alignment: Alignment.topCenter,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Padding(
                   padding:
@@ -114,7 +124,8 @@ class TopRatedMovieLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: List.generate(2, (index) => PhysicalModel(
+    return ListView(
+      children: List.generate(2, (index) => PhysicalModel(
       elevation: 4,
       color: Colors.white,
       borderRadius: BorderRadius.circular(borderRadius),

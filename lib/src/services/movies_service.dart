@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:wemovies/src/di/dependency_injection.dart';
+import 'package:wemovies/src/services/local_storage_service.dart';
 import 'package:wemovies/src/services/models/movie.dart';
+import 'package:wemovies/src/util/constants.dart';
 
 sealed class MoviesService {
   Future<List<Movie>> getNowPlayingMovies({int page = 1});
@@ -33,6 +36,7 @@ class MovieServiceImpl implements MoviesService {
     var res = await dio.get(
         'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=$page');
     List<dynamic> movies = res.data['results'] as List<dynamic>;
+    await getIt<LocalStorageService>().saveMovies(AppConstants.nowPlayingLocalStorageKey, page, movies);
     return movies.map((e) => Movie.fromJson(e)).toList();
   }
 
@@ -41,6 +45,7 @@ class MovieServiceImpl implements MoviesService {
     var res = await dio.get(
         'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$page');
     List<dynamic> movies = res.data['results'] as List<dynamic>;
+    await getIt<LocalStorageService>().saveMovies(AppConstants.topRatedLocalStorageKey, page, movies);
     return movies.map((e) => Movie.fromJson(e)).toList();
   }
 

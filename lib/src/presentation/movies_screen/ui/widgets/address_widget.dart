@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:wemovies/src/repositories/view_models/location_view_model.dart';
 
 class AddressWidget extends StatelessWidget {
-  const AddressWidget({super.key, required this.placemark});
+  const AddressWidget({super.key, required this.location});
 
-  final Placemark placemark;
+  final LocationViewModel location;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class AddressWidget extends StatelessWidget {
               width: 4,
             ),
             Text(
-              placemark.name ?? '--',
+              location.name ?? '--',
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -31,8 +32,7 @@ class AddressWidget extends StatelessWidget {
           ],
         ),
         Text(
-          '${placemark.subLocality},'
-          ' ${placemark.locality}',
+         location.details,
           style: Theme.of(context).textTheme.bodySmall,
         )
       ],

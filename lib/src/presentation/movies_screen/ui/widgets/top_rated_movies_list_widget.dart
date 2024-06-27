@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wemovies/src/presentation/movies_screen/ui/top_rated_movies_widget.dart';
+import 'package:wemovies/src/presentation/movies_screen/ui/widgets/top_rated_movies_widget.dart';
 import 'package:wemovies/src/repositories/view_models/movie_view_model.dart';
 
-import '../../../pag/pagination_view.dart';
+import '../../../paginated_list_view/pagination_view.dart';
 
 class TopRatedMoviesWidget extends StatelessWidget {
   const TopRatedMoviesWidget({super.key, required this.moviesFuture});

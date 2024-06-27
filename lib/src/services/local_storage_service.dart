@@ -1,28 +1,33 @@
 import 'dart:convert';
 
+import 'package:geocoding/geocoding.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wemovies/src/services/models/movie.dart';
+import 'package:wemovies/src/util/constants.dart';
 
 sealed class LocalStorageService {
   Future<void> init();
 
-  Future<void> _saveMovies(String key, int pageNumber, List<dynamic> movies);
+  Future<void> saveMovies(String key, int pageNumber, List<dynamic> movies);
 
-  List<dynamic> _getMovies(String key, int pageNumber);
+  List<Movie> getMovies(String key, int pageNumber);
 
-  Future<List<dynamic>> saveAndGetMovies(
-      String key, int pageNumber, List<dynamic> movies);
+  Future<void> saveLocation(Placemark? placemark);
+
+  Future<Placemark?> getLocation();
 }
 
+@LazySingleton(as: LocalStorageService)
 class LocalStorageServiceImpl implements LocalStorageService {
   late SharedPreferences prefs;
-  static const String _storedPagesKey = 'storedPages';
 
   @override
-  List<dynamic> _getMovies(String key, int pageNumber) {
+  List<Movie> getMovies(String key, int pageNumber) {
     String? moviesJson = prefs.getString('${key}_movies_page_$pageNumber');
     if (moviesJson != null) {
       List<dynamic> moviesList = jsonDecode(moviesJson);
-      return moviesList;
+      return moviesList.map((e) => Movie.fromJson(e)).toList();
     }
     return [];
   }
@@ -33,8 +38,10 @@ class LocalStorageServiceImpl implements LocalStorageService {
   }
 
   @override
-  Future<void> _saveMovies(String key, int pageNumber, List movies) async {
-    List<String> storedPages = prefs.getStringList(_storedPagesKey) ?? [];
+  Future<void> saveMovies(String key, int pageNumber, List movies) async {
+    List<String> storedPages = prefs.getStringList(
+            '${key}_${AppConstants.storedPageLocalStorageKey}') ??
+        [];
 
     if (!storedPages.contains(pageNumber.toString())) {
       String moviesJson = jsonEncode(movies);
@@ -42,15 +49,23 @@ class LocalStorageServiceImpl implements LocalStorageService {
       await prefs.setString('${key}_movies_page_$pageNumber', moviesJson);
 
       storedPages.add(pageNumber.toString());
-      await prefs.setStringList(_storedPagesKey, storedPages);
+      await prefs.setStringList(
+          '${key}_${AppConstants.storedPageLocalStorageKey}', storedPages);
     }
   }
 
   @override
-  Future<List> saveAndGetMovies(
-      String key, int pageNumber, List<dynamic> movies) async {
-    await _saveMovies(key, pageNumber, movies);
-    List storedMovies = _getMovies(key, pageNumber);
-    return storedMovies;
+  Future<void> saveLocation(Placemark? placemark) async {
+    await prefs.setString(
+        AppConstants.locationLocalStorageKey, jsonEncode(placemark?.toJson()));
+  }
+
+  @override
+  Future<Placemark?> getLocation() async {
+    String? l = prefs.getString(AppConstants.locationLocalStorageKey);
+    if (l != null) {
+      return Placemark.fromMap(jsonDecode(l));
+    }
+    return null;
   }
 }

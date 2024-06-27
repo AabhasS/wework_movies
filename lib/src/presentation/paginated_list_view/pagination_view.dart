@@ -17,43 +17,34 @@ class PaginationView<T> extends StatefulWidget {
     required this.onEmpty,
     required this.onError,
     this.pullToRefresh = false,
-    this.refreshIndicatorColor = Colors.blue,
+    this.refreshIndicatorColor = Colors.black,
     this.gridDelegate =
         const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
     List<T>? preloadedItems,
     this.initialLoader = const CircularProgressIndicator(),
-    this.bottomLoader = const CircularProgressIndicator(),
-    this.paginationViewType = PaginationViewType.listView,
-    this.shrinkWrap = false,
-    this.reverse = false,
+    this.bottomLoader = const SizedBox(
+      height: 20,
+      width: 20,
+      child: CircularProgressIndicator(),),
     this.scrollDirection = Axis.vertical,
     this.padding = const EdgeInsets.all(0),
-    this.physics,
     this.separatorBuilder,
     this.scrollController,
-    this.header,
-    this.footer,
     this.updateCachedList,
   })  : preloadedItems = preloadedItems ?? <T>[],
         super(key: key);
 
   final Widget bottomLoader;
-  final Widget? footer;
   final SliverGridDelegate gridDelegate;
-  final Widget? header;
   final Widget initialLoader;
   final Widget onEmpty;
   final EdgeInsets padding;
   final PaginationBuilder<T> pageFetch;
-  final PaginationViewType paginationViewType;
-  final ScrollPhysics? physics;
   final List<T> preloadedItems;
   final bool pullToRefresh;
   final Color refreshIndicatorColor;
-  final bool reverse;
   final ScrollController? scrollController;
   final Axis scrollDirection;
-  final bool shrinkWrap;
 
   /// List data Updates without refreshing the entire list
   final ValueGetter<Map<int, T>?>? updateCachedList;
@@ -139,22 +130,15 @@ class PaginationViewState<T> extends State<PaginationView<T>> {
   _buildCustomScrollView(
       {PaginationLoaded<T>? loadedState, bool showShimmer = false}) {
     return CustomScrollView(
-      reverse: widget.reverse,
       controller: _scrollController,
-      shrinkWrap: widget.shrinkWrap,
       scrollDirection: widget.scrollDirection,
-      physics: AlwaysScrollableScrollPhysics(parent: widget.physics),
       slivers: [
-        if (widget.header != null) widget.header!,
         SliverPadding(
           padding: widget.padding,
           sliver: loadedState != null && !showShimmer
-              ? widget.paginationViewType == PaginationViewType.gridView
-                  ? _buildSliverGrid(loadedState)
-                  : _buildSliverList(loadedState)
+              ? _buildSliverList(loadedState)
               : _buildSliverShimmer(),
         ),
-        if (widget.footer != null) widget.footer!,
       ],
     );
   }
@@ -164,27 +148,6 @@ class PaginationViewState<T> extends State<PaginationView<T>> {
       delegate: SliverChildListDelegate([
         widget.initialLoader,
       ]),
-    );
-  }
-
-  _buildSliverGrid(PaginationLoaded<T> loadedState) {
-    return SliverGrid(
-      gridDelegate: widget.gridDelegate,
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          if (index >= loadedState.items.length) {
-            if(index == loadedState.items.length + 1) {
-              _cubit!.fetchPaginatedList(
-                  updateCachedList: widget.updateCachedList);
-            }
-            return widget.bottomLoader;
-          }
-          return widget.itemBuilder(context, loadedState.items[index], index);
-        },
-        childCount: loadedState.hasReachedEnd
-            ? loadedState.items.length
-            : loadedState.items.length + 2,
-      ),
     );
   }
 

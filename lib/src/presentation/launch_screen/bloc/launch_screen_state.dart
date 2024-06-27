@@ -8,9 +8,9 @@ class LaunchScreenInitial extends LaunchScreenState {}
 class LaunchScreenLoading extends LaunchScreenState {}
 
 class LaunchScreenLoaded extends LaunchScreenState {
-  final Map<String, dynamic> location;
+  final LocationViewModel location;
 
-  LaunchScreenLoaded({this.location = const {}});
+  LaunchScreenLoaded({required this.location});
 }
 
 class LaunchScreenError extends LaunchScreenState {}

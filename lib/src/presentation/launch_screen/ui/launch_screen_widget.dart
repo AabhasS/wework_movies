@@ -49,7 +49,7 @@ class LaunchScreenWidget extends StatelessWidget {
                   ],
                 ),
               LaunchScreenError() => const Text(("OOPS SOMETHING WENT WRONG")),
-              _ => const SizedBox.shrink()
+              _ =>  Text(state.toString())
             };
           })),
         ),

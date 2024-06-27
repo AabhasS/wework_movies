@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:wemovies/src/di/dependency_injection.dart';
 import 'package:wemovies/src/presentation/launch_screen/ui/launch_screen_widget.dart';
 import 'package:wemovies/src/presentation/movies_screen/ui/movies_screen_widget.dart';
-import 'package:wemovies/src/presentation/movies_screen/ui/top_rated_movies_widget.dart';
+import 'package:wemovies/src/presentation/movies_screen/ui/widgets/top_rated_movies_widget.dart';
+import 'package:wemovies/src/services/local_storage_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+ await  getIt<LocalStorageService>().init();
   runApp(const MyApp());
 }
 

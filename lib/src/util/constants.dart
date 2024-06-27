@@ -3,6 +3,7 @@ class AppConstants {
   static const topRatedLocalStorageKey = 'topRated';
   static const locationLocalStorageKey = 'location';
   static const storedPageLocalStorageKey = 'storedPages';
+  static const configLocalStorageKey = 'config';
 
 
 

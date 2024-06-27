@@ -52,6 +52,7 @@ class MovieServiceImpl implements MoviesService {
   @override
   Future getImageConfigs() async {
     var res = await dio.get('https://api.themoviedb.org/3/configuration');
+    print(res.data);
     return res;
   }
 }
